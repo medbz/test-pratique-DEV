@@ -13,7 +13,7 @@ async function enableMocking() {
     const { worker } = await import('./mocks/browser')
     await worker.start({ onUnhandledRequest: 'bypass' })
   } catch (error) {
-    console.warn('MSW indisponible, fallback local activé.', error)
+    console.warn('MSW unavailable, falling back to local data.', error)
   }
 }
 

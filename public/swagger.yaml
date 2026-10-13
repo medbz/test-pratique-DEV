@@ -1,190 +1,53 @@
 openapi: 3.0.3
 info:
-  title: API Espace Client - Informations personnelles
+  title: Offers API
   description: >
-    API de consultation et de mise à jour des informations personnelles d'un
-    client. Ce swagger décrit l'ensemble des champs disponibles côté backend.
-
-    NOTE POUR LE TEST : le formulaire React n'exploite aujourd'hui qu'une partie
-    de ces champs. Plusieurs champs renvoyés par l'API ne sont pas encore
-    affichés / modifiables dans le formulaire.
-  version: 1.2.0
+    Mobile plans catalogue used by the technical test. Served locally by MSW.
+  version: 2.0.0
 servers:
   - url: /api
-    description: Mock local (MSW)
+    description: Local mock (MSW)
 
 paths:
-  /clients/{clientId}:
+  /offers:
     get:
-      summary: Récupère les informations personnelles d'un client
-      operationId: getClient
+      summary: List the available mobile plans
+      operationId: getOffers
       tags:
-        - Client
-      parameters:
-        - name: clientId
-          in: path
-          required: true
-          description: Identifiant unique du client
-          schema:
-            type: string
-          example: "123456"
+        - Offer
       responses:
         "200":
-          description: Informations du client récupérées avec succès
+          description: List of mobile plans
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Client"
-        "404":
-          description: Client introuvable
-
-    put:
-      summary: Met à jour les informations personnelles d'un client
-      operationId: updateClient
-      tags:
-        - Client
-      parameters:
-        - name: clientId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClientUpdate"
-      responses:
-        "200":
-          description: Mise à jour effectuée
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Client"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
 
 components:
   schemas:
-    Client:
+    Offer:
       type: object
+      required: [id, name, price, data, categories]
       properties:
         id:
           type: string
-          description: Identifiant unique du client
-          example: "123456"
-        civilite:
+          example: "3"
+        name:
           type: string
-          description: Civilité du client
-          enum: [MONSIEUR, MADAME, AUTRE]
-          example: MADAME
-        prenom:
+          example: Sensation 5G 150Go
+        price:
+          type: number
+          format: float
+          description: Monthly price in euros
+          example: 29.99
+        data:
           type: string
-          description: Prénom du client
-          example: Camille
-        nom:
-          type: string
-          description: Nom de famille du client
-          example: Durand
-        email:
-          type: string
-          format: email
-          description: Adresse e-mail de contact
-          example: camille.durand@email.fr
-        emailVerifie:
-          type: boolean
-          description: Indique si l'adresse e-mail a été vérifiée
-          example: true
-        telephoneMobile:
-          type: string
-          description: Numéro de téléphone mobile (format E.164)
-          example: "+33612345678"
-        telephoneFixe:
-          type: string
-          description: Numéro de téléphone fixe
-          example: "+33145678900"
-        dateNaissance:
-          type: string
-          format: date
-          description: Date de naissance du client
-          example: "1990-06-15"
-        adressePostale:
-          $ref: "#/components/schemas/Adresse"
-        preferences:
-          $ref: "#/components/schemas/Preferences"
-        segment:
-          type: string
-          description: Segment commercial (usage interne)
-          enum: [GRAND_PUBLIC, PRO, PREMIUM]
-          example: GRAND_PUBLIC
-        dateCreationCompte:
-          type: string
-          format: date-time
-          description: Date de création du compte client
-          example: "2018-03-22T10:15:00Z"
-
-    Adresse:
-      type: object
-      properties:
-        numero:
-          type: string
-          example: "12"
-        libelleVoie:
-          type: string
-          example: Rue de la République
-        complement:
-          type: string
-          example: Bâtiment B, 3e étage
-        codePostal:
-          type: string
-          example: "75011"
-        ville:
-          type: string
-          example: Paris
-        pays:
-          type: string
-          example: France
-
-    Preferences:
-      type: object
-      properties:
-        newsletter:
-          type: boolean
-          description: Abonnement à la newsletter commerciale
-          example: true
-        offresPartenaires:
-          type: boolean
-          description: Accepte de recevoir les offres des partenaires
-          example: false
-        contactSms:
-          type: boolean
-          description: Accepte d'être contacté par SMS
-          example: true
-        langue:
-          type: string
-          description: Langue de communication préférée
-          enum: [fr, en, es]
-          example: fr
-
-    ClientUpdate:
-      type: object
-      description: Champs modifiables du client
-      properties:
-        civilite:
-          type: string
-          enum: [MONSIEUR, MADAME, AUTRE]
-        prenom:
-          type: string
-        nom:
-          type: string
-        email:
-          type: string
-          format: email
-        telephoneMobile:
-          type: string
-        dateNaissance:
-          type: string
-          format: date
-        adressePostale:
-          $ref: "#/components/schemas/Adresse"
-        preferences:
-          $ref: "#/components/schemas/Preferences"
+          description: Data allowance
+          example: 150 GB
+        categories:
+          type: array
+          items:
+            type: string
+          example: [5G, Europe, Smartphone]

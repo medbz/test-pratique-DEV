@@ -45,9 +45,4 @@ Alias de chemins disponibles (voir `vite.config.ts` / `tsconfig.paths.json`) :
 
 ## Pour l'évaluateur
 
-Durée annoncée : 30 minutes. Points d'attention :
-
-- agrégation avec `flatMap` / `reduce` (chaque catégorie comptée une seule fois),
-- recherche insensible à la casse via un champ contrôlé,
-- tri non mutant (`[...list].sort()`) qui se combine avec la recherche,
-- état dérivé (`useMemo` ou calcul au rendu) plutôt que des états dupliqués.
+Durée annoncée : 30 minutes.
